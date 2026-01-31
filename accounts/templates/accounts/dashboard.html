@@ -1,0 +1,50 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header text-white" style="background-color: #1e3d59;">
+                    <h5 class="mb-0">Welcome, {{ user.username }}</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action active" style="background-color: #1e3d59; border-color: #1e3d59;">Dashboard</a>
+                    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">Profile</a>
+                    <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h2 class="mb-4" style="color: #1e3d59;">Dashboard</h2>
+                    <div class="alert alert-info" role="alert">
+                        Welcome to your dashboard! Here is an overview of your account.
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">Recent Activity</h5>
+                                    <p class="card-text">View your recent actions and updates.</p>
+                                    <a href="#" class="btn text-white btn-sm" style="background-color: #1e3d59;">View Activity</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">Account Settings</h5>
+                                    <p class="card-text">Manage your account details and preferences.</p>
+                                    <a href="{% url 'profile' %}" class="btn text-white btn-sm" style="background-color: #1e3d59;">Go to Profile</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

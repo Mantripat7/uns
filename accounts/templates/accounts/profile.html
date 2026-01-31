@@ -1,0 +1,52 @@
+{% extends "templates/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header text-white" style="background-color: #1e3d59;">
+                    <h5 class="mb-0">Menu</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action">Dashboard</a>
+                    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active" style="background-color: #1e3d59; border-color: #1e3d59;">Profile</a>
+                    <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">Logout</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header text-white" style="background-color: #1e3d59;">
+                    <h4 class="mb-0">Profile Settings</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label text-muted">Username</label>
+                            <input type="text" name="username" class="form-control" id="username" value="{{ user.username }}" readonly>
+                            <div class="form-text">Username cannot be changed.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-muted">Email Address</label>
+                            <input type="email" name="email" class="form-control" id="email" value="{{ user.email }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label text-muted">First Name</label>
+                            <input type="text" name="first_name" class="form-control" id="first_name" value="{{ user.first_name }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label text-muted">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" id="last_name" value="{{ user.last_name }}">
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn text-white" style="background-color: #1e3d59;">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
