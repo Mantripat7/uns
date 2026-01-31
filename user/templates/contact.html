@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | UnS-Urban Nest Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #1e3d59;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .contact-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .contact-section img {
+      max-width: 450px;
+      border-radius: 8px;
+    }
+    .contact-info, .contact-form {
+      flex: 1;
+    }
+    .contact-info h2, .contact-form h2 {
+      color: #1e3d59;
+      margin-bottom: 15px;
+    }
+    .contact-info p {
+      margin-bottom: 10px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    form input, form textarea {
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    form button {
+      background: #1e3d59;
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    form button:hover {
+      background: #163246;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #1e3d59;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>UnS-Urban Nest Services</h1>
+    <p>Get in touch with us today</p>
+  </header>
+
+  <div class="container">
+    <div class="contact-section">
+      <img src="{% static 'image/contact.png' %}" class="d-block w-100" alt="Contact UnS Urban Nest Services">
+
+      <div class="contact-info">
+        <h2>Contact Information</h2>
+        <p><strong>Address:</strong> 123 Urban Street, City Center</p>
+        <p><strong>Phone:</strong> +91-9876543210</p>
+        <p><strong>Email:</strong> support@unsservices.com</p>
+        <p>
+
+{% endblock %}

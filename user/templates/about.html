@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | UnS-Urban Nest Services</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    header {
+      background: #1e3d59;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .about-section {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 20px;
+    }
+    .about-section img {
+      max-width: 450px;
+      border-radius: 8px;
+    }
+    .about-text {
+      flex: 1;
+    }
+    .about-text h2 {
+      color: #1e3d59;
+      margin-bottom: 15px;
+    }
+    .about-text p {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #1e3d59;
+      color: #fff;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>UnS-Urban Nest Services</h1>
+    <p>Reliable solutions for your home & workspace</p>
+  </header>
+
+  <div class="container">
+    <div class="about-section">
+      <img src="{% static 'image/uns2.png' %}" class="d-block w-400"  alt="UnS-Urban Nest Services Team">
+      
+      <div class="about-text">
+        <h2>About Us</h2>
+        <p>Welcome to <strong>UnS-Urban Nest Services</strong> — your trusted partner for professional home and urban solutions.</p>
+        <p>We specialize in connecting you with skilled and verified experts including <strong>electricians</strong>, <strong>plumbers</strong>, <strong>carpenters</strong>, and more. Our mission is to make everyday living easier by bringing reliable services right to your doorstep.</p>
+        <p>With a commitment to quality, affordability, and timely support, we ensure that your home and workspace remain safe, functional, and comfortable.</p>
+        <p><em>UnS Urban Nest Services — simplifying urban living, one service at a time.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 UnS-Urban Nest Services | All Rights Reserved</p>
+  </footer>
+</body>
+</html>
+
+{% endblock %}
