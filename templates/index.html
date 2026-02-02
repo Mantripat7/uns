@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero-section text-white d-flex align-items-center"
+    style="background: linear-gradient(135deg, #1e3d59 0%, #162e44 100%); min-height: 80vh;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInLeft">Your Gateway to <span
+                        style="color: #4facfe;">Professional Services</span></h1>
+                <p class="lead mb-5 animate__animated animate__fadeInLeft animate__delay-1s" style="opacity: 0.9;">
+                    UNS connects you with top-rated professionals for all your needs. Fast, reliable, and secure.
+                    Experience the future of service booking today.
+                </p>
+                <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+                    <a href="{% url 'register' %}"
+                        class="btn btn-light btn-lg px-5 fw-bold text-primary shadow-lg rounded-pill"
+                        style="color: #1e3d59 !important;">Get Started</a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-5 fw-bold rounded-pill">Learn More</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block text-center animate__animated animate__fadeInRight">
+                <i class="fa-solid fa-rocket fa-10x" style="color: rgba(255,255,255,0.1);"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features py-5">
+    <div class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="fw-bold text-dark">Why Choose <span style="color: #1e3d59;">UNS?</span></h2>
+                <p class="text-muted">We provide an unmatched experience for both customers and providers.</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card p-4 text-center">
+                    <div class="mb-3 text-primary">
+                        <i class="fa-solid fa-shield-halved fa-3x" style="color: #1e3d59;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Secure & Safe</h4>
+                    <p class="text-muted">Verified professionals and secure payments ensure your peace of mind.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card p-4 text-center">
+                    <div class="mb-3 text-primary">
+                        <i class="fa-solid fa-clock fa-3x" style="color: #1e3d59;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Fast Booking</h4>
+                    <p class="text-muted">Book a service in seconds with our intuitive and fast platform.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm hover-card p-4 text-center">
+                    <div class="mb-3 text-primary">
+                        <i class="fa-solid fa-star fa-3x" style="color: #1e3d59;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Top Quality</h4>
+                    <p class="text-muted">We vet all our providers to ensure high-quality service delivery.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
