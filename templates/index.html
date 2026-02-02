@@ -13,6 +13,15 @@
                     UNS connects you with top-rated professionals for all your needs. Fast, reliable, and secure.
                     Experience the future of service booking today.
                 </p>
+
+                <!-- Search Bar -->
+                <form class="mb-5 w-100 animate__animated animate__fadeInUp animate__delay-1s" action="#" method="GET">
+                    <div class="input-group input-group-lg shadow-lg rounded-pill overflow-hidden">
+                         <span class="input-group-text bg-white border-0 ps-4"><i class="fa-solid fa-search text-muted"></i></span>
+                        <input type="text" name="q" class="form-control border-0" placeholder="Search for services (e.g. Cleaning, Plumbing...)" aria-label="Search">
+                        <button class="btn btn-primary px-4 fw-bold" type="submit" style="background-color: #4facfe; border: none;">Search</button>
+                    </div>
+                </form>
                 <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-2s">
                     <a href="{% url 'register' %}"
                         class="btn btn-light btn-lg px-5 fw-bold text-primary shadow-lg rounded-pill"
@@ -23,6 +32,40 @@
             <div class="col-lg-6 d-none d-lg-block text-center animate__animated animate__fadeInRight">
                 <i class="fa-solid fa-rocket fa-10x" style="color: rgba(255,255,255,0.1);"></i>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Grid Section -->
+<section class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark">Our <span style="color: #1e3d59;">Services</span></h2>
+            <p class="text-muted">Explore our wide range of professional services tailored for you.</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for service in service_types %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card text-center overflow-hidden" style="transition: transform 0.3s;">
+                    <div class="card-body p-4 d-flex flex-column align-items-center">
+                        <div class="mb-4 d-flex align-items-center justify-content-center rounded-circle bg-white shadow-sm" style="width: 80px; height: 80px;">
+                            {% if service.icon %}
+                            <img src="{{ service.icon.url }}" alt="{{ service.name }}" class="img-fluid" style="max-height: 50px; max-width: 50px;">
+                            {% else %}
+                            <i class="fa-solid fa-layer-group fa-2x" style="color: #1e3d59;"></i>
+                            {% endif %}
+                        </div>
+                        <h5 class="card-title fw-bold mb-3">{{ service.name }}</h5>
+                        <p class="card-text text-muted small mb-4">{{ service.description|truncatewords:15 }}</p>
+                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm px-4 mt-auto">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No services found. Please check back later.</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

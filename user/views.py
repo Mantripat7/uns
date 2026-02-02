@@ -2,9 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import User
 
+from services.models import ServiceType
+
 # Create your views here.
 def home(request):
-    return render(request, "index.html")
+    service_types = ServiceType.objects.filter(is_active=True)
+    return render(request, "index.html", {'service_types': service_types})
 
 def index(request):
     return render(request, "base.html")
@@ -17,6 +20,8 @@ def login(request):
             user = User.objects.get(email=form_email)
             if user:
                 if user.password == form_password:
+                    # session create
+                    request.session['user_id'] = user.id
                     return redirect("home")
                 else:
                     print("Password is incorrect")
@@ -51,11 +56,11 @@ def register(request):
 
 
 def about(request):
-    return render(request, "about.html")
+    return render(request, "accounts/about.html")
 
 
 def contact(request):
-    return render(request, "contact.html")
+    return render(request, "accounts/contact.html")
 
 
 # 2 function define service provider -- login and registration

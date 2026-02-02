@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">About Us</h1>
+            <p class="lead text-muted mb-5">
+                Universal Network Services (UNS) is a premier platform dedicated to connecting individuals with top-tier service professionals.
+                Our mission is to simplify the process of finding reliable help for your daily needs.
+            </p>
+        </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                <div class="mb-3 text-primary">
+                    <i class="fa-solid fa-bullseye fa-3x" style="color: #1e3d59;"></i>
+                </div>
+                <h4 class="fw-bold">Our Mission</h4>
+                <p class="text-muted">To provide a seamless, secure, and efficient way for customers to book services and for professionals to grow their business.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 p-4 text-center">
+                <div class="mb-3 text-primary">
+                    <i class="fa-solid fa-eye fa-3x" style="color: #1e3d59;"></i>
+                </div>
+                <h4 class="fw-bold">Our Vision</h4>
+                <p class="text-muted">To become the world's most trusted platform for professional services, empowering communities through technology.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
