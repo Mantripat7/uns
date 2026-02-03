@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from user.views import login, home, contact, about, register
+# from user.views import login, home, contact, about, register
 from django.conf import settings
 from django.conf.urls.static import static
 admin.site.site_header = "Urban Next Services"
@@ -24,12 +24,12 @@ admin.site.site_title = "Admin Dashboard"
 admin.site.index_title = "Welcome to Admin Panel"
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    # path('login/',login , name='login'),
-    # path('register/',register , name='register'),
-    path('',home , name='home'),
-    path('about/',about , name='about'),
-    path('contact/',contact , name='contact'),
+    path('', include('accounts.urls')),
+    path('services/', include('services.urls')),
+
+    # path('',home , name='home'),
+    # path('about/',about , name='about'),
+    # path('contact/',contact , name='contact'),
 ]
 
 if settings.DEBUG:

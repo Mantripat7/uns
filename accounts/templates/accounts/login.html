@@ -98,7 +98,7 @@
                 provider.
             </p>
             <div class="mt-auto">
-                <p class="mb-0 text-white-50">&copy; 2024 Universal Network Services</p>
+                <p class="mb-0 text-white-50">&copy; 2026 Urban Next Services</p>
             </div>
         </div>
 
@@ -109,16 +109,6 @@
                     <span class="fs-4 fw-bold" style="color: #1e3d59;">UNS Login</span>
                 </div>
 
-                {% if messages %}
-                <div class="mb-4">
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
 
                 <form method="post">
                     {% csrf_token %}
@@ -131,6 +121,11 @@
                         <input type="password" name="password" class="form-control" id="floatingPassword"
                             placeholder="Password" required>
                         <label for="floatingPassword">Password</label>
+                    </div>
+
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="#" class="text-decoration-none small" style="color: #1e3d59;" data-bs-toggle="modal"
+                            data-bs-target="#forgotPasswordModal">Forgot Password?</a>
                     </div>
 
                     <button class="btn btn-brand w-100 rounded-2 mb-4" type="submit">Sign In</button>
@@ -146,7 +141,71 @@
         </div>
     </div>
 
+    <!-- Forgot Password Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="forgotPasswordModalLabel" style="color: #1e3d59;">Reset Password
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">Enter your registered email address below. We'll send you a new
+                        password.</p>
+                    <form action="{% url 'forgot_password' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="email" name="email" class="form-control" id="resetEmail"
+                                placeholder="name@example.com" required>
+                            <label for="resetEmail">Email address</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-brand">Send New Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0 shadow"
+            role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body fw-medium">
+                    {% if message.tags == 'success' %}
+                    <i class="fa-solid fa-check-circle me-2"></i>
+                    {% elif message.tags == 'error' %}
+                    <i class="fa-solid fa-circle-exclamation me-2"></i>
+                    {% endif %}
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Initialize Toasts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toastElList = document.querySelectorAll('.toast');
+            const toastList = [...toastElList].map(toastEl => {
+                const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 5000 });
+                toast.show();
+                return toast;
+            });
+        });
+    </script>
 </body>
 
 </html>

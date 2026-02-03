@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <!-- Provider Profile Header -->
+        <div class="card border-0 shadow-sm mb-5 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="bg-primary p-5 text-center text-white" style="background: linear-gradient(135deg, #1e3d59 0%, #162e44 100%);">
+                    <img src="https://ui-avatars.com/api/?name={{ provider.user.full_name }}&background=random&size=128" class="rounded-circle border border-4 border-white shadow mb-3" alt="{{ provider.user.full_name }}">
+                    <h2 class="fw-bold mb-1">{{ provider.user.full_name }}</h2>
+                    <p class="opacity-75 mb-3">{{ provider.user.city }} • {{ provider.experience_years }} Years Experience</p>
+                    <div class="d-inline-flex align-items-center bg-white bg-opacity-10 px-3 py-1 rounded-pill">
+                        <i class="fa-solid fa-star text-warning me-2"></i> 
+                        <span class="fw-bold">{{ provider.rating }}Rating</span>
+                        <span class="mx-2 opacity-50">|</span>
+                        <span>{{ provider.total_jobs }} Jobs Completed</span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h5 class="fw-bold mb-3">About Provider</h5>
+                    <p class="text-muted mb-0">{{ provider.bio }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Offered -->
+        <h3 class="fw-bold mb-4">Services Offered</h3>
+        <div class="row g-4">
+            {% if provider_services %}
+                {% for ps in provider_services %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <span class="badge bg-light text-primary border">{{ ps.service.category.name }}</span>
+                                <h4 class="fw-bold text-primary mb-0">${{ ps.custom_price }}</h4>
+                            </div>
+                            
+                            <h5 class="fw-bold mb-2">{{ ps.service.name }}</h5>
+                            <p class="text-muted small mb-4">{{ ps.service.description|truncatewords:15 }}</p>
+                            
+                            <div class="d-flex align-items-center justify-content-between text-muted small mb-4">
+                                <span><i class="fa-regular fa-clock me-1"></i> {{ ps.service.estimated_duration_minutes }} mins</span>
+                            </div>
+
+                            <div class="d-grid mt-auto">
+                                <button class="btn btn-outline-primary">Select Service</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <p class="text-muted">This provider has not listed any services yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

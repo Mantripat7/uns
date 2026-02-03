@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold display-5 mb-3">Our <span style="color: #1e3d59;">Services</span></h1>
+            <p class="text-muted lead">Explore our comprehensive range of professional services.</p>
+        </div>
+
+        {% if categories %}
+            {% for category in categories %}
+                <div class="mb-5">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-white p-2 rounded-circle shadow-sm me-3">
+                            {% if category.icon %}
+                            <img src="{{ category.icon.url }}" width="40" height="40" alt="{{ category.name }}">
+                            {% else %}
+                            <i class="fa-solid fa-layer-group fa-2x text-primary"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="fw-bold mb-0 text-dark">{{ category.name }}</h3>
+                    </div>
+
+                    <div class="row g-4">
+                        {% for service in services %}
+                            {% if service.category == category %}
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm hover-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="card-title fw-bold mb-0">{{ service.name }}</h5>
+                                            <span class="badge bg-light text-dark border">From ${{ service.base_price }}</span>
+                                        </div>
+                                        <p class="card-text text-muted small mb-4">{{ service.description|truncatewords:20 }}</p>
+                                        <div class="d-flex align-items-center justify-content-between mt-auto">
+                                            <span class="text-muted small"><i class="fa-regular fa-clock me-1"></i> {{ service.estimated_duration_minutes }} mins</span>
+                                            <a href="{% url 'services:service_detail' service.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fa-solid fa-box-open fa-4x text-muted mb-3"></i>
+                <p class="text-muted">No services available at the moment.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

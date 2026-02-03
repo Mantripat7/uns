@@ -1,15 +1,127 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block content %}
+<style>
+    /* Card Hover Effects */
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* Service Card */
+    .service-card-img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    /* Steps Section */
+    .step-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 0 auto 1.5rem;
+        transition: all 0.3s;
+    }
+
+    .step-card:hover .step-icon-wrapper {
+        background: var(--primary-color);
+        transform: scale(1.1);
+    }
+
+    /* Provider Card */
+    .provider-avatar {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border: 3px solid #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* CTA Banner */
+    .cta-banner {
+        background: linear-gradient(90deg, #000 0%, #111 40%, transparent 100%),
+            url('https://picsum.photos/400/300?random=3');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(135deg, rgba(30, 61, 89, 0.8) 0%, rgba(255, 0, 150, 0.2) 100%);
+        opacity: 0.1;
+        z-index: 1;
+    }
+
+    .cta-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Gradient Text */
+    .text-gradient {
+        background: linear-gradient(45deg, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-purple {
+        background: linear-gradient(45deg, #f093fb, #f5576c);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .service-type-card {
+        transition: all 0.3s ease;
+        border: 2px solid transparent !important;
+    }
+
+    .service-type-card:hover {
+        background: linear-gradient(135deg, #1e3d59 0%, #4facfe 100%);
+        border-color: #4facfe !important;
+        transform: translateY(-8px);
+    }
+
+    .service-type-card:hover .card-title,
+    .service-type-card:hover .card-text,
+    .service-type-card:hover i {
+        color: white !important;
+    }
+</style>
 <section class="hero-section text-white d-flex align-items-center"
-    style="background: linear-gradient(135deg, #1e3d59 0%, #162e44 100%); min-height: 80vh;">
+    style="background: url('{% static 'image/download.jfif' %}') no-repeat center center / cover; min-height: 90vh;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6">
-                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInLeft">Your Gateway to <span
+                <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInLeft">Your Gateway to <span
                         style="color: #4facfe;">Professional Services</span></h1>
-                <p class="lead mb-5 animate__animated animate__fadeInLeft animate__delay-1s" style="opacity: 0.9;">
+                <p class="lead mb-3 animate__animated animate__fadeInLeft animate__delay-1s" style="opacity: 0.9;">
                     UNS connects you with top-rated professionals for all your needs. Fast, reliable, and secure.
                     Experience the future of service booking today.
                 </p>
@@ -17,16 +129,19 @@
                 <!-- Search Bar -->
                 <form class="mb-5 w-100 animate__animated animate__fadeInUp animate__delay-1s" action="#" method="GET">
                     <div class="input-group input-group-lg shadow-lg rounded-pill overflow-hidden">
-                         <span class="input-group-text bg-white border-0 ps-4"><i class="fa-solid fa-search text-muted"></i></span>
-                        <input type="text" name="q" class="form-control border-0" placeholder="Search for services (e.g. Cleaning, Plumbing...)" aria-label="Search">
-                        <button class="btn btn-primary px-4 fw-bold" type="submit" style="background-color: #4facfe; border: none;">Search</button>
+                        <span class="input-group-text bg-white border-0 ps-4"><i
+                                class="fa-solid fa-search text-muted"></i></span>
+                        <input type="text" name="q" class="form-control border-0"
+                            placeholder="Search for services (e.g. Cleaning, Plumbing...)" aria-label="Search">
+                        <button class="btn btn-primary px-4 fw-bold" type="submit"
+                            style="background-color: #4facfe; border: none;">Search</button>
                     </div>
                 </form>
                 <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-2s">
                     <a href="{% url 'register' %}"
-                        class="btn btn-light btn-lg px-5 fw-bold text-primary shadow-lg rounded-pill"
+                        class="btn btn-light btn-lg px-3   text-primary shadow-lg rounded-pill"
                         style="color: #1e3d59 !important;">Get Started</a>
-                    <a href="#" class="btn btn-outline-light btn-lg px-5 fw-bold rounded-pill">Learn More</a>
+                    <a href="#" class="btn btn-outline-light btn-lg px-3  rounded-pill">Learn More</a>
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block text-center animate__animated animate__fadeInRight">
@@ -37,7 +152,8 @@
 </section>
 
 <!-- Services Grid Section -->
-<section class="py-5 bg-light">
+<section class="bg-light">
+
     <div class="container py-5">
         <div class="text-center mb-5">
             <h2 class="fw-bold text-dark">Our <span style="color: #1e3d59;">Services</span></h2>
@@ -46,18 +162,19 @@
         <div class="row g-4 justify-content-center">
             {% for service in service_types %}
             <div class="col-md-6 col-lg-3">
-                <div class="card h-100 border-0 shadow-sm hover-card text-center overflow-hidden" style="transition: transform 0.3s;">
+                <div class="card h-100 border-0 shadow-sm hover-card text-center overflow-hidden service-type-card">
                     <div class="card-body p-4 d-flex flex-column align-items-center">
-                        <div class="mb-4 d-flex align-items-center justify-content-center rounded-circle bg-white shadow-sm" style="width: 80px; height: 80px;">
+                        <div class="mb-4 d-flex align-items-center justify-content-center rounded-circle bg-white shadow-sm service-icon-wrapper"
+                            style="width: 80px; height: 80px; transition: all 0.3s;">
                             {% if service.icon %}
-                            <img src="{{ service.icon.url }}" alt="{{ service.name }}" class="img-fluid" style="max-height: 50px; max-width: 50px;">
+                            <img src="{{ service.icon.url }}" alt="{{ service.name }}" class="img-fluid"
+                                style="max-height: 50px; max-width: 50px;">
                             {% else %}
-                            <i class="fa-solid fa-layer-group fa-2x" style="color: #1e3d59;"></i>
+                            <i class="fa-solid fa-layer-group fa-2x" style="color: #1e3d59; transition: all 0.3s;"></i>
                             {% endif %}
                         </div>
                         <h5 class="card-title fw-bold mb-3">{{ service.name }}</h5>
-                        <p class="card-text text-muted small mb-4">{{ service.description|truncatewords:15 }}</p>
-                        <a href="#" class="btn btn-outline-primary rounded-pill btn-sm px-4 mt-auto">Book Now</a>
+                        <p class="card-text text-muted small mb-0">{{ service.description|truncatewords:15 }}</p>
                     </div>
                 </div>
             </div>
@@ -66,6 +183,245 @@
                 <p class="text-muted">No services found. Please check back later.</p>
             </div>
             {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Popular Services Section -->
+<section class="">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">Our Popular <span class="text-gradient-purple">Services</span></h2>
+            <p class="text-muted">High-quality services at your fingertips.</p>
+        </div>
+
+        <!-- Category Pills -->
+        <div class="d-flex justify-content-center flex-wrap gap-2 mb-5">
+            {% for type in service_types|slice:":6" %}
+            <button class="btn btn-outline-dark rounded-pill px-4">{{ type.name }}</button>
+            {% endfor %}
+
+        </div>
+
+        <div class="row g-4">
+            {% for service in popular_services %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card overflow-hidden">
+                    <div class="position-relative">
+                        <img src="https://picsum.photos/seed/{{ service.name|urlencode }}/400/300"
+                            class="card-img-top service-card-img" alt="{{ service.name }}">
+                        {% comment %} <button
+                            class="btn btn-light rounded-circle position-absolute top-0 end-0 m-3 shadow-sm p-2"><i
+                                class="fa-regular fa-heart text-danger"></i></button> {% endcomment %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ service.name }}</h5>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fa-solid fa-star text-warning me-1"></i>
+                            <span class="fw-bold small">4.8</span>
+                            <span class="text-muted small ms-1">(120 Reviews)</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="text-muted small">From <span class="fw-bold text-dark fs-5">${{
+                                    service.base_price }}</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No popular services available at the moment.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-dark px-5 py-2 rounded-1">View All <i
+                    class="fa-solid fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- How UNS Works Section -->
+<section class="bg-black text-white">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">How UNS <span class="text-gradient-purple">Works ?</span></h2>
+            <p class="text-secondary">Each listing is designed to be clear and concise</p>
+        </div>
+        <div class="row g-5 text-center">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon-wrapper   border-secondary">
+                        <i class="fa-solid fa-file-circle-plus fa-3x text-white"></i>
+                    </div>
+                    <h4 class="fw-semibold fs-3 mt-3">1. Post a Service</h4>
+                    <p class="text-secondary ">After you post a job, our matching system identifies and alerts relevant
+                        Providers.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon-wrapper   border-secondary">
+                        <i class="fa-solid fa-screwdriver-wrench fa-3x text-white"></i>
+                    </div>
+                    <h4 class="fw-semibold fs-3 mt-3">2. Get Booked</h4>
+                    <p class="text-secondary ">Choose the best provider for your needs and get the job done quickly and
+                        efficiently.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-icon-wrapper   border-secondary">
+                        <i class="fa-solid fa-chart-line  fa-3x text-white"></i>
+                    </div>
+                    <h4 class="fw-semibold fs-3 mt-3">3. Get Reviewed</h4>
+                    <p class="text-secondary ">Leave a review and help others find the best professionals in your area.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Popular Providers Section -->
+<section class="py-5 bg-white">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">Popular <span class="text-gradient-purple">Providers</span></h2>
+            <p class="text-muted">Top rated professionals ready to help you.</p>
+        </div>
+        <div class="row g-4">
+            {% for provider in popular_providers %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm hover-card p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="https://ui-avatars.com/api/?name={{ provider.user.full_name }}&background=random"
+                                class="rounded-circle" width="60" height="60" alt="{{ provider.user.full_name }}">
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="fw-bold mb-0">{{ provider.user.full_name }}</h6>
+                            <div class="small text-warning mb-1">
+                                <i class="fa-solid fa-star"></i> {{ provider.rating|default:"5.0" }} <span
+                                    class="text-muted">({{ provider.total_jobs }} Jobs)</span>
+                            </div>
+                            <p class="small text-muted mb-0">Starting from $50</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No providers available.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-dark px-5 py-2 rounded-1">View All <i
+                    class="fa-solid fa-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Genuine Reviews Section -->
+<section class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6">Genuine reviews from <span class="text-gradient-purple">Customers</span></h2>
+            <p class="text-muted">See what our customers are saying.</p>
+        </div>
+        <div class="row g-4">
+            {% for review in reviews %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm testimonial-card">
+                    <div class="mb-3 text-warning">
+                        {% for i in "12345" %}
+                        <i class="fa-solid fa-star"></i>
+                        {% endfor %}
+                    </div>
+                    <h5 class="fw-bold mb-3">Excellent Service!</h5>
+                    <p class="text-muted small fst-italic mb-4">"{{ review.comment|default:"Great service provided.
+                        flexible and professional." }}"</p>
+                    <div class="d-flex align-items-center mt-auto">
+                        <img src="https://ui-avatars.com/api/?name={{ review.customer.full_name }}&background=random"
+                            class="rounded-circle me-3" width="40" height="40" alt="Customer">
+                        <div>
+                            <h6 class="fw-bold mb-0">{{ review.customer.full_name }}</h6>
+                            <small class="text-muted">{{ review.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Placeholder Reviews if none exist -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm testimonial-card">
+                    <div class="mb-3 text-warning"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i></div>
+                    <h5 class="fw-bold mb-3">Quality of work was excellent</h5>
+                    <p class="text-muted small fst-italic mb-4">"I had a great experience with the electrical service.
+                        The electrician arrived on time!"</p>
+                    <div class="d-flex align-items-center mt-auto">
+                        <img src="https://ui-avatars.com/api/?name=Robert+Anderson&background=random"
+                            class="rounded-circle me-3" width="40" height="40" alt="Customer">
+                        <div>
+                            <h6 class="fw-bold mb-0">Robert Anderson</h6><small class="text-muted">2 Days Ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm testimonial-card">
+                    <div class="mb-3 text-warning"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i></div>
+                    <h5 class="fw-bold mb-3">Great Cleaning</h5>
+                    <p class="text-muted small fst-italic mb-4">"I love that they use eco-friendly products without
+                        compromising on cleanliness."</p>
+                    <div class="d-flex align-items-center mt-auto">
+                        <img src="https://ui-avatars.com/api/?name=Delois+Coffin&background=random"
+                            class="rounded-circle me-3" width="40" height="40" alt="Customer">
+                        <div>
+                            <h6 class="fw-bold mb-0">Delois Coffin</h6><small class="text-muted">3 Days Ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm testimonial-card">
+                    <div class="mb-3 text-warning"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i></div>
+                    <h5 class="fw-bold mb-3">Luxury Car Cleaning</h5>
+                    <p class="text-muted small fst-italic mb-4">"Exceptional care for my vehicle. The team treated my
+                        car with precision."</p>
+                    <div class="d-flex align-items-center mt-auto">
+                        <img src="https://ui-avatars.com/api/?name=Matthew+Hicks&background=random"
+                            class="rounded-circle me-3" width="40" height="40" alt="Customer">
+                        <div>
+                            <h6 class="fw-bold mb-0">Matthew Hicks</h6><small class="text-muted">5 Days Ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Banner Section -->
+<section class="cta-banner py-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 cta-content">
+                <h1 class="display-4 fw-bold text-white mb-3">Add Services & Grow <br> your <span
+                        class="text-gradient-purple">business with us</span></h1>
+                <p class="text-white-50 lead mb-5">A versatile platform that connects you with local professionals
+                    across various categories, from home services to personal services.</p>
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg rounded-1 px-5 fw-bold"><i
+                        class="fa-solid fa-user-plus me-2"></i> Join Us</a>
+            </div>
         </div>
     </div>
 </section>

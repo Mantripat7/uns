@@ -1,5 +1,113 @@
-h1 {
-    color: rgb(255, 0, 0);
-    text-align: center;
-    font-family: Arial, sans-serif;
+:root {
+    --primary-color: #1e3d59;
+    --secondary-color: #ff6e40;
+    --light-bg: #f8f9fa;
+    --dark-bg: #111;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Card Hover Effects */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Service Card */
+.service-card-img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Steps Section */
+.step-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s;
+}
+
+.step-card:hover .step-icon-wrapper {
+    background: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* Provider Card */
+.provider-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Testimonials */
+.testimonial-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* CTA Banner */
+.cta-banner {
+    background: linear-gradient(90deg, #000 0%, #111 40%, transparent 100%),
+        url('https://picsum.photos/400/300?random=3');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(135deg, rgba(30, 61, 89, 0.8) 0%, rgba(255, 0, 150, 0.2) 100%);
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Gradient Text */
+.text-gradient {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-purple {
+    background: linear-gradient(45deg, #f093fb, #f5576c);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Service Type Icon Hover */
+.service-type-card:hover .service-icon-wrapper {
+    background: linear-gradient(0deg, #1e3d59 8%, #4facfe 69%) !important;
+    color: white !important;
+}
+
+.service-type-card:hover .service-icon-wrapper i {
+    color: white !important;
 }
