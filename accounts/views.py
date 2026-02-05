@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from .models import User
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
+
+#
 from django.core.mail import send_mail
 from django.conf import settings
 import random

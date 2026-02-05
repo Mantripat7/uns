@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header text-white p-4"
+                    style="background: linear-gradient(135deg, #1e3d59 0%, #2b5278 100%);">
+                    <h2 class="mb-0 fw-bold"><i class="fa-solid fa-calendar-check me-2"></i> Book Service</h2>
+                    <p class="mb-0 opacity-75 mt-1">Complete the details below to schedule your service</p>
+                </div>
+                <div class="card-body p-5 bg-white">
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <form method="POST" action="">
+                        {% csrf_token %}
+
+                        <!-- Service Details (Read Only) -->
+                        <div class="mb-4 bg-light p-3 rounded-3 border">
+                            <div class="d-flex align-items-center">
+                                {% if service.icon %}
+                                <img src="{{ service.icon.url }}" alt="{{ service.name }}" class="rounded me-3"
+                                    style="width: 60px; height: 60px; object-fit: cover;">
+                                {% else %}
+                                <div class="rounded me-3 d-flex align-items-center justify-content-center bg-secondary text-white"
+                                    style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-tools fa-lg"></i>
+                                </div>
+                                {% endif %}
+                                <div>
+                                    <h5 class="mb-1 text-dark fw-bold">{{ service.name }}</h5>
+                                    <small class="text-muted"><i class="fa-solid fa-clock me-1"></i> {{
+                                        service.estimated_duration_minutes }} mins approx.</small>
+                                </div>
+                                <div class="ms-auto">
+                                    <span class="badge bg-success fs-6">Base Price: ${{ service.base_price }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-3 text-secondary fw-bold"><i class="fa-solid fa-user-tie me-2"></i>Choose
+                            Professional</h5>
+                        <div class="mb-4">
+                            <label for="provider" class="form-label fw-medium">Select a Service Provider</label>
+                            <select class="form-select form-select-lg" name="provider" id="provider" required>
+                                <option value="" selected disabled>Choose a provider...</option>
+                                {% for item in provider_services %}
+                                <option value="{{ item.provider.id }}" data-price="{{ item.custom_price }}" 
+                                    {% if selected_provider_id == item.provider.id %}selected{% endif %}>
+                                    {{ item.provider.user.full_name }} - ${{ item.custom_price }}
+                                </option>
+                                {% empty %}
+                                <option value="" disabled>No providers available currently</option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">Different providers may offer different rates.</div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3 text-secondary fw-bold"><i
+                                class="fa-solid fa-map-location-dot me-2"></i>Location Details</h5>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="city" class="form-label fw-medium">City</label>
+                                <input type="text" class="form-control form-control-lg" id="city" name="city"
+                                    placeholder="e.g. New York" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label fw-medium">Service Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3"
+                                    placeholder="Enter full address for the service..." required></textarea>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="mb-3 text-secondary fw-bold"><i class="fa-regular fa-calendar-alt me-2"></i>Schedule
+                        </h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="date" class="form-label fw-medium">Preferred Date</label>
+                                <input type="date" class="form-control form-control-lg" id="date" name="date" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="time" class="form-label fw-medium">Preferred Time</label>
+                                <input type="time" class="form-control form-control-lg" id="time" name="time" required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold"
+                                style="background-color: #1e3d59; border-color: #1e3d59;">
+                                <i class="fa-solid fa-check-circle me-2"></i> Confirm Booking
+                            </button>
+                            <a href="{% url 'services:services_list' %}"
+                                class="btn btn-outline-secondary btn-lg py-3">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

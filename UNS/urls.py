@@ -26,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('services/', include('services.urls')),
+    path('bookings/', include('bookings.urls')),
 
     # path('',home , name='home'),
     # path('about/',about , name='about'),

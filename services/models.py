@@ -12,6 +12,9 @@ class ServiceType(models.Model):
 class Service(models.Model):
     category = models.ForeignKey(ServiceType, on_delete=models.CASCADE, related_name="services")
 
+    image = models.ImageField(upload_to="service_images/", null=True, blank=True)
+    icon = models.ImageField(upload_to="service_icons/", null=True, blank=True)
+
     name = models.CharField(max_length=150)
     description = models.TextField()
 
@@ -26,7 +29,7 @@ class Service(models.Model):
 from accounts.models import ProviderProfile
 class ProviderService(models.Model):
     provider = models.ForeignKey(ProviderProfile, on_delete=models.CASCADE, related_name="services")
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="provider_services")
 
     custom_price = models.DecimalField(max_digits=8, decimal_places=2)
     is_active = models.BooleanField(default=True)
