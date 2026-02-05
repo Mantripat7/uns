@@ -1,52 +1,324 @@
 {% extends "templates/base.html" %}
 
 {% block content %}
-<div class="container mt-5">
+<!-- Breadcrumb -->
+<div class="py-3" style="background-color: #ffffffff;">
+    <div class="container text-center">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small fw-medium">
+                <li class="breadcrumb-item"><a href="{% url 'uns' %}" class="text-decoration-none text-muted">Home</a>
+                </li>
+                <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">Profile</li>
+            </ol>
+            <h2 class="h2 fw-bold mb-0 " style="color: #173863;">User Profile </h2>
+        </nav>
+    </div>
+</div>
+
+<div class="container mt-5 mb-5" style="min-height: 50vh;">
     <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header text-white" style="background-color: #1e3d59;">
-                    <h5 class="mb-0">Menu</h5>
+        <!-- Sidebar -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+                <div class="card-body p-4 text-center bg-white">
+                    <div class="mb-3 position-relative d-inline-block">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mx-auto shadow-sm"
+                            style="width: 100px; height: 100px; border: 4px solid #f8f9fa;">
+                            <i class="fa-solid fa-user fa-3x text-secondary"></i>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-1 text-dark">{{ user.username }}</h5>
+                    <p class="text-muted small mb-2">{{ user.email }}</p>
+                    <p class="card-text small text-muted badge bg-light text-dark py-2 px-3 rounded-pill mt-2 border">
+                        <i class="fa-regular fa-calendar me-2"></i>Member since {{ user.created_at|date:"M Y" }}
+                    </p>
                 </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action">Dashboard</a>
-                    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action active" style="background-color: #1e3d59; border-color: #1e3d59;">Profile</a>
-                    <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">Logout</a>
+
+                <div class="list-group list-group-flush border-top">
+                    <button
+                        class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center justify-content-between nav-tab-btn active"
+                        data-target="profile-tab" style="background-color: #1e3d59; color: white;">
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-user-gear me-3"
+                                style="width: 20px;"></i> Profile Settings</span>
+                        <i class="fa-solid fa-chevron-right small"></i>
+                    </button>
+
+                    <button
+                        class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center justify-content-between nav-tab-btn"
+                        data-target="password-tab">
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-lock me-3 text-secondary"
+                                style="width: 20px;"></i> Change Password</span>
+                        <i class="fa-solid fa-chevron-right small text-muted"></i>
+                    </button>
+
+                    <button
+                        class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center justify-content-between nav-tab-btn"
+                        data-target="delete-tab">
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-user-xmark me-3 text-secondary"
+                                style="width: 20px;"></i> Delete Account</span>
+                        <i class="fa-solid fa-chevron-right small text-muted"></i>
+                    </button>
+
+                    <a href="{% url 'logout' %}"
+                        class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center text-danger">
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-arrow-right-from-bracket me-3"
+                                style="width: 20px;"></i> Logout</span>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header text-white" style="background-color: #1e3d59;">
-                    <h4 class="mb-0">Profile Settings</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="username" class="form-label text-muted">Username</label>
-                            <input type="text" name="username" class="form-control" id="username" value="{{ user.username }}" readonly>
-                            <div class="form-text">Username cannot be changed.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label text-muted">Email Address</label>
-                            <input type="email" name="email" class="form-control" id="email" value="{{ user.email }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="first_name" class="form-label text-muted">First Name</label>
-                            <input type="text" name="first_name" class="form-control" id="first_name" value="{{ user.first_name }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="last_name" class="form-label text-muted">Last Name</label>
-                            <input type="text" name="last_name" class="form-control" id="last_name" value="{{ user.last_name }}">
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn text-white" style="background-color: #1e3d59;">Update Profile</button>
-                        </div>
-                    </form>
+
+        <!-- Content Area -->
+        <div class="col-lg-8">
+
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="tab-content fade-in animation-fade">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header text-white py-3 ps-4" style="background-color: #1e3d59;">
+                        <h5 class="mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i> Profile Settings</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" >
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="first_name" class="form-label text-muted fw-medium">First Name</label>
+                                    <input type="text" name="first_name" class="form-control" id="first_name"
+                                        value="{{ user.first_name }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="last_name" class="form-label text-muted fw-medium">Last Name</label>
+                                    <input type="text" name="last_name" class="form-control" id="last_name"
+                                        value="{{ user.last_name }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="username" class="form-label text-muted fw-medium">Username</label>
+                                    <input type="text" name="username" class="form-control bg-light" id="username"
+                                        value="{{ user.username }}"  >
+                                   
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label text-muted fw-medium">Email Address</label>
+                                    <input type="email" name="email" class="form-control" id="email"
+                                        value="{{ user.email }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label text-muted fw-medium">Phone Number</label>
+                                    <input type="text" name="phone" class="form-control" id="phone"
+                                        value="{{ user.phone }}">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="city" class="form-label text-muted fw-medium">City</label>
+                                    <input type="text" name="city" class="form-control" id="city"
+                                        value="{{ user.city }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label for="address" class="form-label text-muted fw-medium">Address</label>
+                                    <textarea name="address" class="form-control" id="address"
+                                        rows="3">{{ user.address }}</textarea>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-4">
+                                <button type="submit" class="btn text-white px-4 py-2"
+                                    style="background-color: #1e3d59;">
+                                    <i class="fa-solid fa-save me-2"></i> Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <!-- Password Tab -->
+            <div id="password-tab" class="tab-content fade-in animation-fade d-none">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header text-white py-3 ps-4" style="background-color: #1e3d59;">
+                        <h5 class="mb-0 fw-bold"><i class="fa-solid fa-lock me-2"></i> Change Password</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="{% url 'change_password' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="current_password" class="form-label text-muted fw-medium">Current
+                                    Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i
+                                            class="fa-solid fa-key text-muted"></i></span>
+                                    <input type="password" name="current_password"
+                                        class="form-control border-start-0 ps-0" id="current_password" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="new_password" class="form-label text-muted fw-medium">New Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i
+                                            class="fa-solid fa-lock text-muted"></i></span>
+                                    <input type="password" name="new_password" class="form-control border-start-0 ps-0"
+                                        id="new_password" required minlength="8">
+                                </div>
+                                <div class="form-text mt-2"><i class="fa-solid fa-circle-info me-1"></i> Password must
+                                    be at least 8 characters long.</div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="confirm_password" class="form-label text-muted fw-medium">Confirm New
+                                    Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i
+                                            class="fa-solid fa-check-double text-muted"></i></span>
+                                    <input type="password" name="confirm_password"
+                                        class="form-control border-start-0 ps-0" id="confirm_password" required>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end pt-2">
+                                <a href="{% url 'forgot_password' %}"
+                                    class="btn btn-link text-decoration-none text-muted">Forgot Password?</a>
+                                <button type="submit" class="btn text-white px-4 py-2"
+                                    style="background-color: #1e3d59;">
+                                    Change Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Tab -->
+            <div id="delete-tab" class="tab-content fade-in animation-fade d-none">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-danger text-white py-3 ps-4">
+                        <h5 class="mb-0 fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> Delete Account
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div
+                            class="alert alert-danger border-danger-subtle bg-danger-subtle text-danger mb-4 rounded-3">
+                            <h6 class="alert-heading fw-bold"><i class="fa-solid fa-circle-exclamation me-2"></i>
+                                Warning: This action is irreversible!</h6>
+                            <p class="mb-0 small mt-2">Deleting your account will permanently remove all your data,
+                                including booking history, personal information, and reviews. You will not be able to
+                                recover your account.</p>
+                        </div>
+
+                        <form method="post" action="{% url 'delete_account' %}">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <label for="delete_password" class="form-label text-muted fw-medium">Please enter your
+                                    password to confirm:</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i
+                                            class="fa-solid fa-key text-muted"></i></span>
+                                    <input type="password" name="password" class="form-control border-start-0 ps-0"
+                                        id="delete_password" required placeholder="Enter your password">
+                                </div>
+                            </div>  
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-outline-danger px-4 py-2"
+                                    onclick="return confirm('Are you absolutely sure you want to delete your account? This cannot be undone.');">
+                                    <i class="fa-solid fa-trash-can me-2"></i> Permanently Delete Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabs = document.querySelectorAll('.nav-tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Reset all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('active');
+                    t.style.backgroundColor = '';
+                    t.style.color = '';
+
+                    // Reset icons
+                    const icon = t.querySelector('i:first-child');
+                    if (icon) {
+                        icon.classList.add('text-secondary');
+                        icon.classList.remove('text-white');
+                    }
+
+                    // Reset chevron
+                    const chevron = t.querySelector('.fa-chevron-right');
+                    if (chevron) {
+                        chevron.classList.add('text-muted');
+                        chevron.classList.remove('text-white');
+                    }
+                });
+
+                // Activate clicked tab
+                tab.classList.add('active');
+                tab.style.backgroundColor = '#1e3d59';
+                tab.style.color = 'white';
+
+                // Active icons
+                const icon = tab.querySelector('i:first-child');
+                if (icon) {
+                    icon.classList.remove('text-secondary');
+                    icon.classList.add('text-white');
+                }
+
+                const chevron = tab.querySelector('.fa-chevron-right');
+                if (chevron) {
+                    chevron.classList.remove('text-muted');
+                    chevron.classList.add('text-white');
+                }
+
+                // Show content
+                const targetId = tab.getAttribute('data-target');
+                contents.forEach(content => {
+                    if (content.id === targetId) {
+                        content.classList.remove('d-none');
+                        // Small timeout to allow display:block to apply before opacity transition if we had one
+                        content.style.opacity = '1';
+                    } else {
+                        content.classList.add('d-none');
+                        content.style.opacity = '0';
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<style>
+    .nav-tab-btn {
+        transition: all 0.2s ease-in-out;
+    }
+
+    .nav-tab-btn:hover:not(.active) {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+
+    .animation-fade {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
 {% endblock %}

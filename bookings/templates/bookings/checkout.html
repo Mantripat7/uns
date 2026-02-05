@@ -16,16 +16,16 @@
                 <div class="bg-light p-4 rounded-3 text-start mb-4">
                     <h5 class="fw-bold mb-3">Booking Details:</h5>
                     <p class="mb-2"><strong>Service:</strong> {{ booking.service.name }}</p>
-                    <p class="mb-2"><strong>Provider:</strong> {{ booking.provider.user.full_name }}</p>
+                    <p class="mb-2"><strong>Provider:</strong> {{ booking.provider.user.first_name }}</p>
                     <p class="mb-2"><strong>Date:</strong> {{ booking.booking_date }} at {{ booking.booking_time }}</p>
-                    <p class="mb-0"><strong>Status:</strong> <span class="badge bg-warning text-dark">{{
-                            booking.get_status_display }}</span></p>
+                    <p class="mb-0"><strong>Status:</strong> <span class="badge bg-warning text-dark">
+                            {{ booking.get_status_display }}</span></p>
                 </div>
 
                 <div class="d-grid gap-2">
                     <a href="{% url 'uns' %}" class="btn btn-primary btn-lg"
                         style="background-color: #1e3d59; border-color: #1e3d59;">Go to Home</a>
-                    <a href="#" class="btn btn-outline-secondary btn-lg">View My Bookings</a>
+                    <a href="{% url 'bookings:my_bookings' %}" class="btn btn-outline-secondary btn-lg">View My Bookings</a>
                 </div>
             </div>
         </div>

@@ -11,4 +11,6 @@ urlpatterns = [
     path('about/', views.about, name="about"),
     path('contact/', views.contact, name="contact"),
     path('forgot-password/', views.forgot_password, name="forgot_password"),
+    path('change-password/', views.change_password, name="change_password"),
+    path('delete-account/', views.delete_account, name="delete_account"),
 ]

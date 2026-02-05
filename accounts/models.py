@@ -6,15 +6,17 @@ class User(models.Model):
         ('PROVIDER', 'Provider'),
     )
 
-    full_name = models.CharField(max_length=120)
+    username = models.CharField(max_length=120)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)  # store hashed password
     phone = models.IntegerField()
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='CUSTOMER')
 
-    city = models.CharField(max_length=100)
-    address = models.TextField(blank=True)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
 
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
@@ -22,7 +24,7 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.full_name} ({self.role})"
+        return f"{self.username} ({self.role})"
     
 class ProviderProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -42,4 +44,4 @@ class ProviderProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Provider: {self.user.full_name}"
+        return f"Provider: {self.user.username}"

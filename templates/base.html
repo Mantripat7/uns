@@ -94,10 +94,10 @@
               <i class="fa-solid fa-user-circle me-1"></i> Account
             </button>
             <ul class="dropdown-menu dropdown-menu-end shadow">
-              <li><a class="dropdown-item" href="{% url 'dashboard' %}"><i
-                    class="fa-solid fa-gauge me-2 text-muted"></i> Dashboard</a></li>
               <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-user me-2 text-muted"></i>
                   Profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-book me-2 text-muted"></i>
+                  My Bookings</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -116,12 +116,12 @@
   </nav>
 
   <!-- Toast Container -->
-  <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1060;">
+  <div class="toast-container position-fixed  end-0 p-3" style="z-index: 1060; top: 67px; ">
     {% if messages %}
     {% for message in messages %}
     <div
-      class="toast align-items-center text-bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} border-0 shadow"
-      role="alert" aria-live="assertive" aria-atomic="true">
+      class="toast align-items-center border-0 shadow"
+      role="alert" aria-live="assertive" aria-atomic="true" style="background-color: {% if message.tags == 'error' %} #dc3545 {% else %} #fff {% endif %};">
       <div class="d-flex">
         <div class="toast-body fw-medium">
           {% if message.tags == 'success' %}
@@ -131,7 +131,7 @@
           {% endif %}
           {{ message }}
         </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+        <button type="button" class="btn-close btn-close me-2 m-auto" data-bs-dismiss="toast"
           aria-label="Close"></button>
       </div>
     </div>

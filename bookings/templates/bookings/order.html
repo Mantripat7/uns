@@ -38,8 +38,8 @@
                                 {% endif %}
                                 <div>
                                     <h5 class="mb-1 text-dark fw-bold">{{ service.name }}</h5>
-                                    <small class="text-muted"><i class="fa-solid fa-clock me-1"></i> {{
-                                        service.estimated_duration_minutes }} mins approx.</small>
+                                    <small class="text-muted"><i class="fa-solid fa-clock me-1"></i> 
+                                        {{service.estimated_duration_minutes }} mins approx.</small>
                                 </div>
                                 <div class="ms-auto">
                                     <span class="badge bg-success fs-6">Base Price: ${{ service.base_price }}</span>
@@ -56,7 +56,7 @@
                                 {% for item in provider_services %}
                                 <option value="{{ item.provider.id }}" data-price="{{ item.custom_price }}" 
                                     {% if selected_provider_id == item.provider.id %}selected{% endif %}>
-                                    {{ item.provider.user.full_name }} - ${{ item.custom_price }}
+                                    {{ item.provider.user.username }} - ${{ item.custom_price }}
                                 </option>
                                 {% empty %}
                                 <option value="" disabled>No providers available currently</option>

@@ -54,7 +54,7 @@ def create_booking(request, service_id):
         
         request.session['last_booking_id'] = booking.id
         messages.success(request, "Booking request sent successfully!")
-        return redirect('bookings:checkout')
+        return redirect('bookings:booking_success')
 
     context = {
         'service': service,
@@ -67,8 +67,21 @@ def create_booking(request, service_id):
 def booking_success(request):
     booking_id = request.session.get('last_booking_id')
     booking = None
+    user = request.session.get('user_id')
     if booking_id:
         booking = get_object_or_404(Booking, id=booking_id, customer=user)
     
     return render(request, 'bookings/checkout.html', {'booking': booking})
 
+def my_bookings(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    user = get_object_or_404(User, id=user_id)
+    bookings = Booking.objects.filter(customer=user).order_by('-created_at')
+    
+    context = {
+        'bookings': bookings,
+    }
+    return render(request, 'bookings/my_bookings.html', context)

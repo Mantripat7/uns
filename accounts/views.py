@@ -43,7 +43,7 @@ def login(request):
         password = request.POST.get('password')
         try:
             user = User.objects.get(email=email)
-            if check_password(password, user.password):
+            if check_password(password, user.password) and user.is_active:
             # if password == user.password:
                 request.session['user_id'] = user.id
                 
@@ -79,7 +79,7 @@ def register(request):
             
         hashed_password = make_password(password)
         user = User.objects.create(
-            full_name=username,
+            username=username,
             email=email,
             phone=int(phone),
             password=hashed_password,
@@ -102,32 +102,32 @@ def profile(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name', '')
         last_name = request.POST.get('last_name', '')
+        username = request.POST.get('username')
         email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        city = request.POST.get('city')
+        address = request.POST.get('address')
         
         user.email = email
-        user.full_name = f"{first_name} {last_name}".strip()
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        
+        if phone:
+            user.phone = int(phone)
+            
+        user.city = city
+        user.address = address
+        
         user.save()
         messages.success(request, 'Profile updated successfully')
-        
-    # Prepare user object for template compatibility
-    # The template expects: username, email, first_name, last_name
-    # User model has: full_name, email
-    
-    # Inject temporary attributes for template display
-    user.username = user.full_name
-    names = user.full_name.split(' ', 1)
-    user.first_name = names[0]
-    user.last_name = names[1] if len(names) > 1 else ''
-    
+ 
     return render(request, 'accounts/profile.html', {'user': user})
 
 def dashboard(request):
     user = get_user_from_session(request)
     if not user:
         return redirect('login')
-    
-    # Inject temporary attributes if needed by dashboard
-    user.username = user.full_name
     
     return render(request, 'accounts/dashboard.html', {'user': user})
 
@@ -167,3 +167,60 @@ def forgot_password(request):
         return redirect('login')
     
     return redirect('login')
+
+def change_password(request):
+    user = get_user_from_session(request)
+    if not user:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # Verify current password
+        if not check_password(current_password, user.password):
+            messages.error(request, 'Incorrect current password')
+            return redirect('profile')
+        
+        # Verify new passwords match
+        if new_password != confirm_password:
+            messages.error(request, 'New passwords do not match')
+            return redirect('profile')
+        
+        # Validate new password length
+        if len(new_password) < 8:
+            messages.error(request, 'Password must be at least 8 characters long')
+            return redirect('profile')
+        
+        # Update password
+        user.password = make_password(new_password)
+        user.save()
+        
+        messages.success(request, 'Password changed successfully')
+        return redirect('profile')
+    
+    return redirect('profile')
+
+def delete_account(request):
+    user = get_user_from_session(request)
+    if not user:
+        return redirect('login')
+    
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        
+        # Verify password
+        if not check_password(password, user.password):
+            messages.error(request, 'Incorrect password. Please try again.')
+            return redirect('profile')
+        
+        # Delete account
+        user.is_active = False
+        user.save()
+        request.session.flush()
+        
+        messages.success(request, 'Your account has been permanently deleted.')
+        return redirect('login')
+    
+    return redirect('profile')

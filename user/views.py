@@ -42,7 +42,7 @@ def register(request):
         password = request.POST.get("password")
 
         User.objects.create(
-            full_name = username,
+            username = username,
             email = email,
             phone = phone_number,
             password = password,

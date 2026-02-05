@@ -51,11 +51,11 @@
                 <div class="card h-100 border-0 shadow-sm hover-card">
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex align-items-center mb-4">
-                            <img src="https://ui-avatars.com/api/?name={{ ps.provider.user.full_name }}&background=random"
+                            <img src="https://ui-avatars.com/api/?name={{ ps.provider.user.username }}&background=random"
                                 class="rounded-circle me-3" width="60" height="60"
-                                alt="{{ ps.provider.user.full_name }}">
+                                alt="{{ ps.provider.user.username }}">
                             <div>
-                                <h5 class="fw-bold mb-1">{{ ps.provider.user.full_name }}</h5>
+                                <h5 class="fw-bold mb-1">{{ ps.provider.user.username }}</h5>
                                 <div class="text-warning small">
                                     <i class="fa-solid fa-star"></i> {{ ps.provider.rating }}
                                     <span class="text-muted">({{ ps.provider.total_jobs }} jobs)</span>
@@ -77,7 +77,7 @@
 
                         <div class="d-grid mt-auto">
                             <a href="{% url 'bookings:create_booking' service.id %}?provider_id={{ ps.provider.id }}"
-                                class="btn btn-primary">Book with {{ ps.provider.user.full_name|truncatechars:15 }}</a>
+                                class="btn btn-primary">Book with {{ ps.provider.user.username|truncatechars:15 }}</a>
                         </div>
                     </div>
                 </div>
