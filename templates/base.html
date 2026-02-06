@@ -96,7 +96,8 @@
             <ul class="dropdown-menu dropdown-menu-end shadow">
               <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-user me-2 text-muted"></i>
                   Profile</a></li>
-              <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fa-solid fa-book me-2 text-muted"></i>
+              <li><a class="dropdown-item" href="{% url 'bookings:my_bookings' %}"><i
+                    class="fa-solid fa-book me-2 text-muted"></i>
                   My Bookings</a></li>
               <li>
                 <hr class="dropdown-divider">
@@ -119,9 +120,8 @@
   <div class="toast-container position-fixed  end-0 p-3" style="z-index: 1060; top: 67px; ">
     {% if messages %}
     {% for message in messages %}
-    <div
-      class="toast align-items-center border-0 shadow"
-      role="alert" aria-live="assertive" aria-atomic="true" style="background-color: {% if message.tags == 'error' %} #dc3545 {% else %} #fff {% endif %};">
+    <div class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true"
+      style="background-color: {% if message.tags == 'error' %} #dc3545 {% else %} #fff {% endif %};">
       <div class="d-flex">
         <div class="toast-body fw-medium">
           {% if message.tags == 'success' %}

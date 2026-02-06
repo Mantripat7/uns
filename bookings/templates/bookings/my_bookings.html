@@ -2,7 +2,350 @@
 {% load static %}
 
 {% block content %}
+<style>
+    :root {
+        --status-pending-bg: #fffbf0;
+        --status-pending-color: #ffaa00;
+        --status-accepted-bg: #f0f7ff;
+        --status-accepted-color: #0099ff;
+        --status-completed-bg: #f0fff4;
+        --status-completed-color: #00cc44;
+        --status-cancelled-bg: #f8f9fa;
+        --status-cancelled-color: #6c757d;
+        --status-rejected-bg: #fff0f0;
+        --status-rejected-color: #ff4444;
+    }
 
-{% comment %} code here  {% endcomment %}
+    .booking-card {
+        background: #ffffff;
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        position: relative;
+        height: 100%;
+    }
 
+    .booking-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-status-strip {
+        width: 6px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .status-PENDING {
+        background-color: var(--status-pending-color);
+    }
+
+    .status-ACCEPTED {
+        background-color: var(--status-accepted-color);
+    }
+
+    .status-COMPLETED {
+        background-color: var(--status-completed-color);
+    }
+
+    .status-CANCELLED {
+        background-color: var(--status-cancelled-color);
+    }
+
+    .status-REJECTED {
+        background-color: var(--status-rejected-color);
+    }
+
+    .badge-status {
+        font-size: 0.75rem;
+        padding: 0.35em 0.8em;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-PENDING {
+        background: var(--status-pending-bg);
+        color: var(--status-pending-color);
+    }
+
+    .badge-ACCEPTED {
+        background: var(--status-accepted-bg);
+        color: var(--status-accepted-color);
+    }
+
+    .badge-COMPLETED {
+        background: var(--status-completed-bg);
+        color: var(--status-completed-color);
+    }
+
+    .badge-CANCELLED {
+        background: var(--status-cancelled-bg);
+        color: var(--status-cancelled-color);
+    }
+
+    .badge-REJECTED {
+        background: var(--status-rejected-bg);
+        color: var(--status-rejected-color);
+    }
+
+    .service-icon-box {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        object-fit: cover;
+    }
+
+    .provider-section {
+        background: #fcfcfc;
+        border-top: 1px solid #f0f0f0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .nav-pills .nav-link {
+        color: #6c757d;
+        font-weight: 500;
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        transition: all 0.2s;
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .nav-pills .nav-link.active {
+        background-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 4px 10px rgba(30, 61, 89, 0.2);
+    }
+
+    .nav-pills .nav-link:hover:not(.active) {
+        background-color: #f8f9fa;
+    }
+
+    .animate-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="bg-light-subtle min-vh-100" style="background-color: #f3f5f9;">
+    <div class="container py-5">
+        <!-- Header -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-7">
+                <h2 class="fw-bold text-dark mb-2">My Bookings</h2>
+                <p class="text-secondary m-0">Manage your upcoming and past services</p>
+            </div>
+            <div class="col-md-5 text-md-end mt-4 mt-md-0">
+                <a href="{% url 'services:services_list' %}"
+                    class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-medium">
+                    <i class="fa-solid fa-plus me-2"></i>New Request
+                </a>
+            </div>
+        </div>
+
+        {% if bookings %}
+        <!-- Tabs -->
+        <div class="d-flex justify-content-center justify-content-md-start mb-4">
+            <ul class="nav nav-pills" id="bookingTabs" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" onclick="filterBookings('all', this)">All</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="filterBookings('active', this)">Active</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="filterBookings('completed', this)">Completed</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" onclick="filterBookings('cancelled', this)">Cancelled</button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Bookings Grid -->
+        <div class="row g-4" id="bookingsContainer">
+            {% for booking in bookings %}
+            <div class="col-lg-6 booking-item" data-status="{{ booking.status }}"
+                data-category="{% if booking.status == 'PENDING' or booking.status == 'ACCEPTED' %}active{% elif booking.status == 'COMPLETED' %}completed{% else %}cancelled{% endif %}">
+
+                <div class="booking-card pl-3">
+                    <div class="card-status-strip status-{{ booking.status }}"></div>
+
+                    <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="d-flex">
+                                {% if booking.service.icon %}
+                                <img src="{{ booking.service.icon.url }}" class="service-icon-box shadow-sm"
+                                    alt="Service">
+                                {% else %}
+                                <div class="service-icon-box shadow-sm text-primary">
+                                    <i class="fa-solid fa-layer-group fa-lg"></i>
+                                </div>
+                                {% endif %}
+                                <div class="ms-3">
+                                    <h5 class="fw-bold text-dark mb-1">{{ booking.service.name }}</h5>
+                                    <span class="text-muted small">ID: #{{ booking.id }}</span>
+                                </div>
+                            </div>
+                            <span class="badge-status badge-{{ booking.status }}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </div>
+
+                        <!-- Info Grid -->
+                        <div class="row g-3 mt-2">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center text-muted small mb-1">
+                                    <i class="fa-regular fa-calendar me-2"></i> Date
+                                </div>
+                                <div class="fw-medium text-dark">{{ booking.booking_date }}</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center text-muted small mb-1">
+                                    <i class="fa-regular fa-clock me-2"></i> Time
+                                </div>
+                                <div class="fw-medium text-dark">{{ booking.booking_time }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Provider & Location Strip -->
+                    <div class="provider-section px-4 py-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 border-end-md">
+                                <div class="d-flex align-items-center">
+                                    {% if booking.provider.profile_picture %}
+                                    <img src="{{ booking.provider.profile_picture.url }}"
+                                        class="rounded-circle border border-white shadow-sm me-2"
+                                        style="width: 35px; height: 35px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="rounded-circle bg-secondary-subtle d-flex align-items-center justify-content-center me-2"
+                                        style="width: 35px; height: 35px;">
+                                        <i class="fa-solid fa-user text-muted small"></i>
+                                    </div>
+                                    {% endif %}
+                                    <div class="lh-sm">
+                                        <div class="small text-muted">Provider</div>
+                                        <div class="fw-bold text-dark small">{{ booking.provider.user.username }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-3 mt-md-0 ps-md-4">
+                                <div class="d-flex align-items-start">
+                                    <i class="fa-solid fa-location-dot text-danger me-2 mt-1 small"></i>
+                                    <div class="lh-sm">
+                                        <div class="small fw-bold text-dark">Location</div>
+                                        <div class="small text-muted text-truncate" style="max-width: 150px;">{{
+                                            booking.city }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted small text-uppercase fw-bold">Total</span>
+                            <div class="h4 fw-bold text-primary mb-0">${{ booking.price }}</div>
+                        </div>
+
+                        {% if booking.status == 'COMPLETED' %}
+                        <button class="btn btn-sm btn-outline-warning rounded-pill px-3">
+                            <i class="fa-solid fa-star me-1"></i> Review
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <!-- JavaScript Empty State -->
+            <div id="emptyState" class="col-12 text-center py-5 d-none">
+                <i class="fa-regular fa-folder-open fa-3x text-muted mb-3 opacity-25"></i>
+                <p class="text-muted">No bookings found in this category.</p>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- Full Empty State -->
+        <div class="text-center py-5">
+            <div class="bg-white rounded-circle shadow-sm d-inline-flex align-items-center justify-content-center mb-4"
+                style="width: 120px; height: 120px;">
+                <i class="fa-solid fa-calendar-days fa-4x text-primary opacity-50"></i>
+            </div>
+            <h3 class="fw-bold text-dark">No bookings yet</h3>
+            <p class="text-muted mb-4">You haven't made any bookings. Start exploring our services!</p>
+            <a href="{% url 'services:services_list' %}"
+                class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow hover-card">
+                Browse Services
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function filterBookings(category, btnElement) {
+        // Update active tab
+        document.querySelectorAll('.nav-pills .nav-link').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+
+        // Filter items
+        const items = document.querySelectorAll('.booking-item');
+        let visibleCount = 0;
+
+        items.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+
+            if (category === 'all' || itemCategory === category) {
+                item.style.display = 'block';
+                item.classList.add('animate-in');
+                visibleCount++;
+            } else {
+                item.style.display = 'none';
+                item.classList.remove('animate-in');
+            }
+        });
+
+        // Show empty state if needed
+        const emptyState = document.getElementById('emptyState');
+        if (visibleCount === 0) {
+            emptyState.classList.remove('d-none');
+        } else {
+            emptyState.classList.add('d-none');
+        }
+    }
+</script>
+
+<style>
+    /* Responsive adjustment for provider split */
+    @media (min-width: 768px) {
+        .border-end-md {
+            border-right: 1px solid #eee;
+        }
+    }
+</style>
 {% endblock %}

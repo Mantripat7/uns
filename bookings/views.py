@@ -79,7 +79,11 @@ def my_bookings(request):
         return redirect('login')
     
     user = get_object_or_404(User, id=user_id)
-    bookings = Booking.objects.filter(customer=user).order_by('-created_at')
+    bookings = Booking.objects.filter(customer=user).select_related(
+        'service', 
+        'provider', 
+        'provider__user'
+    ).order_by('-created_at')
     
     context = {
         'bookings': bookings,

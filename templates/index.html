@@ -297,11 +297,11 @@
                 <div class="card h-100 border-0 shadow-sm hover-card p-3">
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
-                            <img src="https://ui-avatars.com/api/?name={{ provider.user.full_name }}&background=random"
-                                class="rounded-circle" width="60" height="60" alt="{{ provider.user.full_name }}">
+                            <img src="https://ui-avatars.com/api/?name={{ provider.user.username }}&background=random"
+                                class="rounded-circle" width="60" height="60" alt="{{ provider.user.username }}">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <h6 class="fw-bold mb-0">{{ provider.user.full_name }}</h6>
+                            <h6 class="fw-bold mb-0">{{ provider.user.username }}</h6>
                             <div class="small text-warning mb-1">
                                 <i class="fa-solid fa-star"></i> {{ provider.rating|default:"5.0" }} <span
                                     class="text-muted">({{ provider.total_jobs }} Jobs)</span>
@@ -344,10 +344,10 @@
                     <p class="text-muted small fst-italic mb-4">"{{ review.comment|default:"Great service provided.
                         flexible and professional." }}"</p>
                     <div class="d-flex align-items-center mt-auto">
-                        <img src="https://ui-avatars.com/api/?name={{ review.customer.full_name }}&background=random"
+                        <img src="https://ui-avatars.com/api/?name={{ review.customer.username }}&background=random"
                             class="rounded-circle me-3" width="40" height="40" alt="Customer">
                         <div>
-                            <h6 class="fw-bold mb-0">{{ review.customer.full_name }}</h6>
+                            <h6 class="fw-bold mb-0">{{ review.customer.username }}</h6>
                             <small class="text-muted">{{ review.created_at|timesince }} ago</small>
                         </div>
                     </div>

@@ -46,7 +46,7 @@
                     <button
                         class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center justify-content-between nav-tab-btn"
                         data-target="password-tab">
-                        <span class="d-flex align-items-center"><i class="fa-solid fa-lock me-3 text-secondary"
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-lock me-3  "
                                 style="width: 20px;"></i> Change Password</span>
                         <i class="fa-solid fa-chevron-right small text-muted"></i>
                     </button>
@@ -54,7 +54,7 @@
                     <button
                         class="list-group-item list-group-item-action py-3 px-4 border-0 d-flex align-items-center justify-content-between nav-tab-btn"
                         data-target="delete-tab">
-                        <span class="d-flex align-items-center"><i class="fa-solid fa-user-xmark me-3 text-secondary"
+                        <span class="d-flex align-items-center"><i class="fa-solid fa-user-xmark me-3  "
                                 style="width: 20px;"></i> Delete Account</span>
                         <i class="fa-solid fa-chevron-right small text-muted"></i>
                     </button>
@@ -78,7 +78,7 @@
                         <h5 class="mb-0 fw-bold"><i class="fa-solid fa-pen-to-square me-2"></i> Profile Settings</h5>
                     </div>
                     <div class="card-body p-4">
-                        <form method="post" >
+                        <form method="post">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -96,8 +96,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="username" class="form-label text-muted fw-medium">Username</label>
                                     <input type="text" name="username" class="form-control bg-light" id="username"
-                                        value="{{ user.username }}"  >
-                                   
+                                        value="{{ user.username }}">
+
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="email" class="form-label text-muted fw-medium">Email Address</label>
@@ -216,7 +216,7 @@
                                     <input type="password" name="password" class="form-control border-start-0 ps-0"
                                         id="delete_password" required placeholder="Enter your password">
                                 </div>
-                            </div>  
+                            </div>
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-outline-danger px-4 py-2"
                                     onclick="return confirm('Are you absolutely sure you want to delete your account? This cannot be undone.');">

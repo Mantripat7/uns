@@ -1,47 +1,216 @@
-{% extends "templates/base.html" %}
+{% extends "accounts/provider_base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header text-white" style="background-color: #1e3d59;">
-                    <h5 class="mb-0">Welcome, {{ user.username }}</h5>
-                </div>
-                <div class="list-group list-group-flush">
-                    <a href="{% url 'dashboard' %}" class="list-group-item list-group-item-action active" style="background-color: #1e3d59; border-color: #1e3d59;">Dashboard</a>
-                    <a href="{% url 'profile' %}" class="list-group-item list-group-item-action">Profile</a>
-                    <a href="{% url 'logout' %}" class="list-group-item list-group-item-action text-danger">Logout</a>
-                </div>
+<style>
+    /* Cards */
+    .stat-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        color: #fff;
+    }
+
+    .bg-purple {
+        background-color: #6f42c1;
+    }
+
+    .bg-green {
+        background-color: #28a745;
+    }
+
+    .bg-red {
+        background-color: #dc3545;
+    }
+
+    .bg-blue {
+        background-color: #0d6efd;
+    }
+
+    .chart-container {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        border: 1px solid #f0f0f0;
+        height: 100%;
+    }
+
+    /* List Group for Sidebar (Top Services simulation) */
+    .service-list-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid #f5f5f5;
+    }
+
+    .service-list-item:last-child {
+        border-bottom: none;
+    }
+
+    .service-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+
+    /* Bar Chart Placeholder CSS */
+    .bar-chart-placeholder {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        height: 200px;
+        padding-top: 20px;
+    }
+
+    .bar {
+        width: 30px;
+        background-color: #6f42c1;
+        border-radius: 4px 4px 0 0;
+        position: relative;
+    }
+
+    .bar:hover {
+        opacity: 0.9;
+    }
+</style>
+
+<!-- Cards Row -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-4">
+        <div class="stat-card">
+            <div>
+                <div class="text-muted small fw-semibold mb-1">Upcoming Appointments</div>
+                <h3 class="fw-bold mb-0 text-dark">{{ accepted_bookings|default:0 }}</h3>
+                <small class="text-secondary"><span class="text-success"><i class="fa-solid fa-arrow-up"></i> 12%</span>
+                    from last week</small>
+            </div>
+            <div class="stat-icon bg-purple rounded-3">
+                <i class="fa-regular fa-calendar-check"></i>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-4">
-                    <h2 class="mb-4" style="color: #1e3d59;">Dashboard</h2>
-                    <div class="alert alert-info" role="alert">
-                        Welcome to your dashboard! Here is an overview of your account.
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="stat-card">
+            <div>
+                <div class="text-muted small fw-semibold mb-1">Completed Appointments</div>
+                <h3 class="fw-bold mb-0 text-dark">{{ completed_bookings|default:0 }}</h3>
+                <small class="text-secondary"><span class="text-success"><i class="fa-solid fa-arrow-up"></i> 5%</span>
+                    from last week</small>
+            </div>
+            <div class="stat-icon bg-green rounded-3">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-4">
+        <div class="stat-card">
+            <div>
+                <div class="text-muted small fw-semibold mb-1">Canceled Appointments</div>
+                <h3 class="fw-bold mb-0 text-dark">{{ cancelled_bookings|default:0 }}</h3>
+                <small class="text-secondary"><span class="text-danger"><i class="fa-solid fa-arrow-down"></i> 2%</span>
+                    from last week</small>
+            </div>
+            <div class="stat-icon bg-red rounded-3">
+                <i class="fa-solid fa-calendar-xmark"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bottom Row: Top Services & Bookings -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="m-0 fw-bold">Top Services</h5>
+                <a href="#" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body p-0">
+                {% if provider_services %}
+                {% for service_obj in provider_services %}
+                <div class="service-list-item">
+                    {% if service_obj.service.image %}
+                    <img src="{{ service_obj.service.image.url }}" class="service-img" alt="">
+                    {% else %}
+                    <div class="service-img bg-light d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-tools text-muted"></i>
                     </div>
-                    <div class="row g-3">
-                        <div class="col-sm-6">
-                            <div class="card h-100 border-primary">
-                                <div class="card-body">
-                                    <h5 class="card-title">Recent Activity</h5>
-                                    <p class="card-text">View your recent actions and updates.</p>
-                                    <a href="#" class="btn text-white btn-sm" style="background-color: #1e3d59;">View Activity</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="card h-100 border-primary">
-                                <div class="card-body">
-                                    <h5 class="card-title">Account Settings</h5>
-                                    <p class="card-text">Manage your account details and preferences.</p>
-                                    <a href="{% url 'profile' %}" class="btn text-white btn-sm" style="background-color: #1e3d59;">Go to Profile</a>
-                                </div>
-                            </div>
+                    {% endif %}
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 fw-bold">{{ service_obj.service.name }}</h6>
+                        <div class="small text-muted">
+                            <span class="text-warning me-1"><i class="fa-solid fa-star"></i> 4.9</span>
+                            <span class="ms-2">${{ service_obj.custom_price }}</span>
                         </div>
                     </div>
+                    <i class="fa-solid fa-chevron-right text-muted small"></i>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="p-4 text-center text-muted">
+                    No services found. <a href="#">Add Services</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 py-3 px-4 d-flex justify-content-between align-items-center">
+                <h5 class="m-0 fw-bold">Recent Bookings</h5>
+                <a href="#" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <!-- Calendar-like Layout or List -->
+                <div class="list-group list-group-flush">
+                    {% for booking in recent_bookings %}
+                    <div class="list-group-item border-0 px-4 py-3">
+                        <div class="d-flex align-items-center">
+                            <div class="bg-light-subtle rounded-3 p-2 text-center me-3" style="min-width: 50px;">
+                                <div class="small fw-bold text-uppercase text-danger">{{
+                                    booking.booking_date|date:"M" }}</div>
+                                <div class="h5 mb-0 fw-bold">{{ booking.booking_date|date:"d" }}</div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-1">{{ booking.service.name }}</h6>
+                                <div class="small text-muted">{{ booking.booking_time }} • {{
+                                    booking.customer.username }}</div>
+                            </div>
+                            <span
+                                class="badge {% if booking.status == 'PENDING' %}bg-warning text-dark{% elif booking.status == 'COMPLETED' %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                                {{ booking.status }}
+                            </span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="p-4 text-center text-muted">No upcoming bookings.</div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -3,6 +3,7 @@ from accounts.models import User, ProviderProfile
 from services.models import Service
 
 class Booking(models.Model):
+
     STATUS_CHOICES = (
         ('PENDING', 'Pending'),
         ('ACCEPTED', 'Accepted'),

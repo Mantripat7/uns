@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Provider Dashboard - UNS</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --topbar-height: 70px;
+            --primary-color: #e91e63;
+            /* Pinkish color from reference */
+            --primary-hover: #d81b60;
+            --bg-body: #f7f7f7;
+            --text-dark: #2c3e50;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #fff;
+            padding-top: 0;
+            z-index: 1000;
+            border-right: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-header {
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .logo-text span {
+            color: var(--primary-color);
+        }
+
+        .sidebar-menu {
+            padding: 16px 0;
+            list-style: none;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            position: relative;
+        }
+
+        /* Standard Nav Link (used when NOT active) */
+        .sidebar-menu .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: #67748e;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            border-right: 3px solid transparent;
+        }
+
+        .sidebar-menu .nav-link:hover {
+            color: var(--primary-color);
+            background-color: #f9f9f9;
+        }
+
+        /* Active Nav Link (used for Current Page) */
+        .sidebar-menu .nav-link.active {
+            color: var(--primary-color);
+            background-color: #fff4f7;
+            /* Light pink bg */
+            border-right-color: var(--primary-color);
+        }
+
+        .sidebar-menu i {
+            width: 24px;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: all 0.3s ease;
+        }
+
+        /* Topbar */
+        .topbar {
+            height: var(--topbar-height);
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+        }
+
+        /* Content Area */
+        .content-body {
+            padding: 18px 32px;
+            min-height: calc(100vh - var(--topbar-height));
+        }
+
+        /* Responsive toggle */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .toggle-btn {
+                display: block !important;
+            }
+        }
+
+        .toggle-btn {
+            display: none;
+            margin-right: 15px;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        /* User dropdown */
+        .user-dropdown img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .visit-link {
+            text-decoration: none;
+            color: #67748e;
+            font-size: 0.9rem;
+            margin-right: 20px;
+        }
+
+        .visit-link:hover {
+            color: var(--primary-color);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="{% url 'dashboard' %}" class="logo-text">
+                <i class="fa-solid fa-layer-group me-2"></i>UNS<span>Provider</span>
+            </a>
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="{% url 'dashboard' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'my_services' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'my_services' %}active{% endif %}">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>My Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'total_bookings' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'total_bookings' %}active{% endif %}">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <span>Total Bookings</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'provider_info' %}"
+                    class="nav-link {% if request.resolver_match.url_name == 'provider_info' %}active{% endif %}">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>Personal Info</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'delete_account' %}" class="nav-link text-danger">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span>Delete Account</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'logout' %}" class="nav-link text-danger">
+                    <i class="fa-solid fa-power-off"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="d-flex align-items-center">
+                <div class="toggle-btn" onclick="document.getElementById('sidebar').classList.toggle('show')">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+                <!-- Search -->
+                <div class="d-none d-md-block">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0"><i
+                                class="fa-solid fa-search text-muted"></i></span>
+                        <input type="text" class="form-control bg-light border-0" placeholder="Search"
+                            style="width: 250px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <a href="{% url 'uns' %}" class="visit-link d-none d-sm-block">
+                    <i class="fa-solid fa-globe me-1"></i> Visit Website
+                </a>
+
+                <div class="dropdown me-3">
+                    <a href="#" class="text-secondary position-relative me-2" data-bs-toggle="dropdown">
+                        <i class="fa-regular fa-bell fa-lg"></i>
+                        <!-- Notification badge can be dynamic -->
+                        {% if pending_bookings > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="font-size: 0.6rem; padding: 3px 5px;">
+                            3
+                        </span>
+                        {% endif %}
+                    </a>
+                </div>
+
+                <div class="dropdown user-dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if user.providerprofile.profile_picture %}
+                        <img src="{{ user.providerprofile.profile_picture.url }}" alt="Avatar">
+                        {% else %}
+                        <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=random" alt="Avatar">
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg">
+                        <li>
+                            <h6 class="dropdown-header">Hi, {{ user.first_name|default:user.username }}</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Body -->
+        <div class="content-body">
+            {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>
